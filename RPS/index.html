@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Rock, Paper, Scissors</title>
+        <style>
+            body { background-color: #3498db;
+                text-align: center;
+                color: #000;
+            }
+            #game-display {
+                margin-top: 50px;
+                font-size: 24px;
+            }
+            #input-box {
+                margin-top: 20px;
+                padding: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Rock, Paper, Scissors</h1>
+        <div id="game-display"></div>
+        <div id="input-box">
+            <label for="user-input">Enter your choice (rock, paper or scissors)</label>
+            <input type="text" id="user-input" background-color="white">
+            <button onclick="playGame()">Play</button>
+        </div>
+        <script>
+            document.getElementById("user-input").addEventListener("keydown", function(event) {
+                if (event.key === "Enter") {
+                    playGame();
+                }
+            });
+            function playGame() {
+                const userChoice = document.getElementById('user-input').value.toLowerCase();
+                const choices = ['rock', 'paper', 'scissors'];
+                const randomIndex = Math.floor(Math.random() * 3);
+                const computerChoice = choices[randomIndex];
+
+                if (choices.includes(userChoice)) {
+                    //countdown timer
+                    document.getElementById("game-display").innerText = 'Rock';
+                    setTimeout(() => {
+                        document.getElementById("game-display").innerText = 'Paper';
+                        setTimeout(() => {
+                            document.getElementById("game-display").innerText = 'Scissors';
+                            setTimeout(() => {
+                                document.getElementById("game-display").innerText = 'Shoot!';
+                                setTimeout(() => {
+                                    document.getElementById("game-display").innerText = computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1);
+                                    setTimeout(() => {
+                                        determineWinner(userChoice, computerChoice);
+                                    }, 1000);    
+                                }, 1000)
+                            }, 500)
+                        }, 500)
+                    }, 500)
+                } else {
+                    alert('Invalid input. Please enter rock, paper or scissors.')
+                }
+            }
+
+            function determineWinner(userChoice, computerChoice) {
+                if (userChoice === computerChoice) {
+                    alert('It\'s a draw!');
+                } else if (
+                    (userChoice === 'rock' && computerChoice === 'scissors') ||
+                    (userChoice === 'paper' && computerChoice === 'rock') ||
+                    (userChoice === 'scissors' && computerChoice === 'paper')
+                ) {
+                    alert('🎉🎉 You win! 🎉🎉');
+                } else {
+                    alert('Computer wins!');
+                }
+            }
+        </script>
+    </body>
+</html>
