@@ -2,7 +2,7 @@
 Rashaan Lightpool
 Project 1: Rock, Paper, Scissors WebApp
 SD 235 - Professor Stuart, WCC
-10/07/2023
+10/16/2023
 -->
 
 <!DOCTYPE html>
@@ -39,9 +39,13 @@ SD 235 - Professor Stuart, WCC
                     playGame();
                 }
             });
+
+            // Main function to start the game
             function playGame() {
+                // Getting the user's choice and converting it to lowercase
                 const userChoice = document.getElementById('user-input').value.toLowerCase();
                 const choices = ['rock', 'paper', 'scissors'];
+                // Generating a random index for the computer choice
                 const randomIndex = Math.floor(Math.random() * 3);
                 const computerChoice = choices[randomIndex];
 
@@ -55,6 +59,7 @@ SD 235 - Professor Stuart, WCC
                             setTimeout(() => {
                                 document.getElementById("game-display").innerText = 'Shoot!';
                                 setTimeout(() => {
+                                    // Displaying the computer's choice with the first letter capitalized
                                     document.getElementById("game-display").innerText = computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1);
                                     setTimeout(() => {
                                         determineWinner(userChoice, computerChoice);
@@ -64,10 +69,12 @@ SD 235 - Professor Stuart, WCC
                         }, 500)
                     }, 500)
                 } else {
+                    // alert the user that their input is invalid
                     alert('Invalid input. Please enter rock, paper or scissors.')
                 }
             }
 
+            // function to determine the winner and display the result
             function determineWinner(userChoice, computerChoice) {
                 if (userChoice === computerChoice) {
                     alert('It\'s a draw!');
