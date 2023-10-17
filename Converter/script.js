@@ -1,5 +1,5 @@
 const exchangeRates = {
-    "base": USD,
+    "base": "USD",
     "date": "2022-09-24",
     "rates": { 
       "AUD": 1.531863,
@@ -32,20 +32,33 @@ const currencySymbols = {
 }
 
 function convertCurrency(amount, fromCurrency, toCurrency) {
-    if (!exchangeRates.rates[fromCurrency] || !exchangeRates.rates[toCurrency]) {
-        document.getElementById("conversionResult").innerHTML = "Invalid currency code provided.";
+    // Handle the case where fromCurrency or toCurrency is not in exchangeRates.rates
+    if (fromCurrency !== 'USD' && !exchangeRates.rates[fromCurrency]) {
+        document.getElementById("conversionResult").innerHTML = "Invalid source currency code provided.";
         return;  // Exit the function early
     }
 
-    let amountInUSD = amount / exchangeRates.rates[fromCurrency];
-    let convertedAmount = amountInUSD * exchangeRates.rates[toCurrency];
+    if (toCurrency !== 'USD' && !exchangeRates.rates[toCurrency]) {
+        document.getElementById("conversionResult").innerHTML = "Invalid target currency code provided.";
+        return;  // Exit the function early
+    }
+
+    // Convert the amount string to a number
+    amount = parseFloat(amount);
+
+    // Convert the amount to USD first
+    let amountInUSD = fromCurrency === 'USD' ? amount : amount / exchangeRates.rates[fromCurrency];
+
+    // Convert from USD to the target currency
+    let convertedAmount = toCurrency === 'USD' ? amountInUSD : amountInUSD * exchangeRates.rates[toCurrency];
     
     // Display the conversion result directly in the div
     document.getElementById("conversionResult").innerHTML = `${amount} ${fromCurrency} = ${convertedAmount.toFixed(2)} ${toCurrency} (as of ${exchangeRates.date})`;
 }
 
 
-function currencyLookup(query) {
+
+function lookupCurrency(query) {
     let results = [];
 
     // search for matching string in currency codes or currency names
@@ -56,7 +69,8 @@ function currencyLookup(query) {
     }
 
     if (results.length === 0) {
-        throw new Error('No matching currency found');
+        document.getElementById("lookupResult").innerHTML = "No matching currency found";
+        return;  // Exit the function early
     }
 
     document.getElementById("lookupResult").innerHTML = results.join(', ');
