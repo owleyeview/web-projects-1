@@ -1,7 +1,7 @@
 // Rashaan Lightpool
 // Project 1: Calculator WebApp
 // SD235 - Professor Stuart, WCC
-// 10/07/2023
+// 10/16/2023
 
 // Based on a vague description of this algorithm from 
 // Data Structures and Algorithm Analysis in Java, 3rd Edition
@@ -19,6 +19,12 @@ buttons.forEach(button => {
 let inputStack = [];
 
 function processInput(value) {
+    if (value === "Clear") {
+        // Clear the display and the stack
+        display.value = "";
+        inputStack = [];
+        return;
+    }
     if (value !== "=") {
         // If it's not "=", store the input in the stack
         inputStack.push(value);
@@ -28,7 +34,8 @@ function processInput(value) {
         let newStack = [];
         let currentNumber = "";
         for (let i = 0; i < inputStack.length; i++) {
-            if (!isNaN(inputStack[i])) {
+            // If the input is part of a number, add it to the currentNumber
+            if (!isNaN(inputStack[i]) || inputStack[i] === ".") {
                 currentNumber += inputStack[i];
             } else {
                 if (currentNumber !== "") {
@@ -76,7 +83,7 @@ function infixToPostfix(tokens) {
 
         if (!isNaN(token)) {  // If it's a number
             output.push(token);
-        } else if (token === "+" || token === "-" || token === "*" || token === "/") {
+        } else if (token === "+" || token === "-" || token === "*" || token === "/" || token === "^") {
             while (operatorStack.length > 0 && hasPrecedence(operatorStack[operatorStack.length - 1], token)) {
                 output.push(operatorStack.pop());
             }
@@ -100,11 +107,19 @@ function infixToPostfix(tokens) {
 
 function hasPrecedence(op1, op2) {
 
+    if (op1 === "^") {
+        return false;
+    }
     if ((op1 === "*" || op1 === "/") && (op2 === "+" || op2 === "-")) {
         return true;
     }
-
-    return false;
+    if ((op1 === "+" || op1 === "-") && (op2 === "*" || op2 === "/")) {
+        return false;
+    }
+    if (op1 === "(" || op1 === ")") {
+        return false;
+    }
+    return true;
 }
 
 function evaluate(operator, operand1, operand2) {
@@ -116,5 +131,7 @@ function evaluate(operator, operand1, operand2) {
         return operand1 * operand2;
     } else if (operator === "/") {
         return operand1 / operand2;
+    } else if (operator === "^") {
+        return Math.pow(operand1, operand2);
     }
 }
