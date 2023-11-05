@@ -28,6 +28,14 @@ body {
     margin-top: 0.5rem;
 }
 
+.win-text {
+    color: #fe00b7
+}
+
+.lose-text {
+    color: #DBFEB7;
+}
+
 .choice-container {
     display: flex;
     justify-content: center;

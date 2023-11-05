@@ -81,18 +81,18 @@ function determineWinner(userChoice, computerChoice) {
     (userChoice === "paper" && computerChoice === "rock") ||
     (userChoice === "scissors" && computerChoice === "paper")
   ) {
-    document.querySelector(".game-display").innerText = `${
+    document.querySelector(".game-display").innerHTML = `${
       userChoice.charAt(0).toUpperCase() + userChoice.slice(1)
     } beats ${
       computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)
-    }. You win!`;
+    }. <span class="win-text">You win!</span>`;
     score.user++;
   } else {
     document.querySelector(".game-display").innerText = `${
       computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)
     } beats ${
       userChoice.charAt(0).toUpperCase() + userChoice.slice(1)
-    }. You lose!`;
+    }. <span class="lose-text">You lose!</span>`;
     score.computer++;
   }
   document.querySelector(".score-text").innerText = `Score: ${
