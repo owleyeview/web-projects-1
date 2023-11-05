@@ -1,6 +1,7 @@
 const score = {
   user: 0,
   computer: 0,
+  draw: 0,
 };
 
 // Listening for the "Play" button click to start the game
@@ -33,10 +34,7 @@ function playGame() {
     img.classList.add("active-choice");
   });
 
-  const choices = ["rock", "paper", "scissors"];
-  // Generating a random index for the computer choice
-  const randomIndex = Math.floor(Math.random() * 3);
-  const computerChoice = choices[randomIndex];
+  const computerChoice = randomChoice();
 
   //countdown timer
   document.querySelector(".game-display").innerText = "Rock...";
@@ -48,30 +46,36 @@ function playGame() {
       setTimeout(() => {
         document.querySelector(".game-display").innerText = "Shoot!";
         setTimeout(() => {
+          // Making a random choice if the user doesn't make a choice
           if (!userChoice) {
-            images.forEach((img) => {
-              img.removeEventListener("click", handleClick);
-              img.classList.remove("active-choice");
-            });
-          } else {
-            // Indicate the computer choice
-            document
-              .getElementById(computerChoice)
-              .classList.add("computer-choice");
-            setTimeout(() => {
-              determineWinner(userChoice, computerChoice);
-            }, 1000);
+            userChoice = randomChoice();
+            document.getElementById(userChoice).classList.add("user-choice");
           }
+          // Indicate the computer choice
+          document
+            .getElementById(computerChoice)
+            .classList.add("computer-choice");
+          setTimeout(() => {
+            determineWinner(userChoice, computerChoice);
+          }, 1000);
         }, 2000);
       }, 1500);
     }, 1500);
   }, 1500);
 }
 
+// function to generate a random choice
+function randomChoice() {
+  const choices = ["rock", "paper", "scissors"];
+  const randomIndex = Math.floor(Math.random() * 3);
+  const choice = choices[randomIndex];
+  return choice;
+}
+
 // function to determine the winner and display the result
 function determineWinner(userChoice, computerChoice) {
   if (userChoice == computerChoice) {
-    document.querySelector(".game-display").innerText = "It's a draw!";  // should this change the score?
+    document.querySelector(".game-display").innerText = "It's a draw!"; // should this change the score?
   } else if (
     (userChoice === "rock" && computerChoice === "scissors") ||
     (userChoice === "paper" && computerChoice === "rock") ||
@@ -93,7 +97,7 @@ function determineWinner(userChoice, computerChoice) {
   }
   document.querySelector(".score-text").innerText = `Score: ${
     score.user
-  } out of ${score.computer + score.user}`;
+  } out of ${score.computer + score.user + score.draw}`;
   setTimeout(() => {
     document.querySelector(".game-display").innerText = "Play again?";
     document.querySelector(".start-button").innerText = "Play Again";
