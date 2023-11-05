@@ -63,6 +63,10 @@ body {
     color: #DBFEB7;
 }
 
+.computer-choice.user-choice .choice-image {
+    color: #da89b2;
+}
+
 .game-bottom {
     display: flex;
     flex-direction: column;

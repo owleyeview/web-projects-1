@@ -7,22 +7,26 @@ const score = {
 document.querySelector(".start-button").addEventListener("click", function () {
   document.querySelector(".start-button").innerText = "Play Hand";
   playGame();
-})
+});
 
 // Main function to start the game
 function playGame() {
-  // Get all elements with the class "choice"
-  let images = document.querySelectorAll(".choice");
-  console.log(images);
+  document
+    .querySelector(".start-button")
+    .removeEventListener("click", playGame); // playGame?
+
   let userChoice = null;
 
   function handleClick(event) {
-    userChoice = event.target.id;
-    // Change target.id class from active-choice to user-choice
-    event.target.classList.remove("active-choice");
-    event.target.classList.add("user-choice");
+    userChoice = event.currentTarget.id; // changed from target to currentTarget
+    console.log(userChoice);
+    // Change currentTarget.id class from active-choice to user-choice
+    event.currentTarget.classList.remove("active-choice");
+    event.currentTarget.classList.add("user-choice");
   }
 
+  // Get all elements with the class "choice"
+  let images = document.querySelectorAll(".choice");
   // Add event listener to each image
   images.forEach((img) => {
     img.addEventListener("click", handleClick);
@@ -67,7 +71,7 @@ function playGame() {
 // function to determine the winner and display the result
 function determineWinner(userChoice, computerChoice) {
   if (userChoice == computerChoice) {
-    document.querySelector(".game-display").innerText = "It's a draw!";
+    document.querySelector(".game-display").innerText = "It's a draw!";  // should this change the score?
   } else if (
     (userChoice === "rock" && computerChoice === "scissors") ||
     (userChoice === "paper" && computerChoice === "rock") ||
@@ -93,5 +97,16 @@ function determineWinner(userChoice, computerChoice) {
   setTimeout(() => {
     document.querySelector(".game-display").innerText = "Play again?";
     document.querySelector(".start-button").innerText = "Play Again";
+    document
+      .querySelector(".start-button")
+      .addEventListener("click", function () {
+        // Remove the computer and user choice classes to reset the colors
+        document
+          .getElementById(computerChoice)
+          .classList.remove("computer-choice");
+        document.getElementById(userChoice).classList.remove("user-choice");
+        document.querySelector(".start-button").innerText = "Play Hand";
+        playGame();
+      });
   }, 2000);
 }
