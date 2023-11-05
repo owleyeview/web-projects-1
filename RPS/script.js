@@ -8,7 +8,6 @@ document.querySelector(".start-button").addEventListener("click", function () {
   document.querySelector(".start-button").innerText = "Play Hand";
   playGame();
 })
-//document.querySelector(".start-button").removeEventListener("click", function (){});
 
 // Main function to start the game
 function playGame() {
