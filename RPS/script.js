@@ -4,17 +4,20 @@ const score = {
   draw: 0,
 };
 
-// Listening for the "Play" button click to start the game
-document.querySelector(".start-button").addEventListener("click", function () {
+
+let playGameHandler = function () {
   document.querySelector(".start-button").innerText = "Play Hand";
   playGame();
-});
+};
+
+// Listening for the "Play" button click to start the game
+document.querySelector(".start-button").addEventListener("click", playGameHandler);
 
 // Main function to start the game
 function playGame() {
   document
     .querySelector(".start-button")
-    .removeEventListener("click", playGame); // playGame?
+    .removeEventListener("click", playGameHandler); // playGame?
 
   let userChoice = null;
 
@@ -76,6 +79,7 @@ function randomChoice() {
 function determineWinner(userChoice, computerChoice) {
   if (userChoice == computerChoice) {
     document.querySelector(".game-display").innerText = "It's a draw!"; // should this change the score?
+    score.draw++;
   } else if (
     (userChoice === "rock" && computerChoice === "scissors") ||
     (userChoice === "paper" && computerChoice === "rock") ||
@@ -88,7 +92,7 @@ function determineWinner(userChoice, computerChoice) {
     }. <span class="win-text">You win!</span>`;
     score.user++;
   } else {
-    document.querySelector(".game-display").innerText = `${
+    document.querySelector(".game-display").innerHTML = `${
       computerChoice.charAt(0).toUpperCase() + computerChoice.slice(1)
     } beats ${
       userChoice.charAt(0).toUpperCase() + userChoice.slice(1)
